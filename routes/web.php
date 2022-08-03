@@ -1,18 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\RenpyController;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::get('renpy-traslate', RenpyController::class)->name('renpy.traslate');
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/', function () {
-    return view('welcome');
+    $tr = new GoogleTranslate('es');
+    return $tr->translate('Hello World! Are you stupid!');
 });
