@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use ZipArchive,File;
 use Carbon\Carbon;
 use Livewire\Component;
-use Illuminate\Support\Arr;
+// use Illuminate\Support\Arr;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 use Stichoza\GoogleTranslate\GoogleTranslate;
@@ -16,7 +16,14 @@ class RenpyController extends Component
     use WithFileUploads;
     use WithPagination;
 
-    public $files = [];
+    // Propiedades del modal
+    public $showModal = false;
+    public $matchSource,$matchTarget;
+
+    // traduccion de archivos
+    public $files = [], $zipName;
+
+    // Traduccion individual
     public $traslate_source,$traslate_target,$file_name="file.rpy";
 
     public $listeners = [
@@ -24,13 +31,12 @@ class RenpyController extends Component
         'file' => 'generateFile'
     ];
 
-    public function updatingSearch()
-    {
-        $this->resetPage();
+    public function mount(){
+        $this->zipName = Carbon::now('America/Mexico_City');
+        $this->zipName = uniqid() . '_' . $this->zipName->format('d-m-Y');
     }
 
-    public function render()
-    {
+    public function render(){
         return view('livewire.renpy')->extends('layouts.app')
             ->section('content');
     }
@@ -62,74 +68,101 @@ class RenpyController extends Component
         return Storage::download('traductions/'.$this->file_name);
     }
 
+    // Sube los archivos y genera la traduccion
     public function uploadFiles(){
-        // $traslate=[];
-        if ($this->files) {
-            foreach ($this->files as $file) {
-                // Creacion de directorios
-                Storage::makeDirectory('traductions/tempFileTraslate');
-                Storage::makeDirectory('traductions/fileTraduction');
-                Storage::makeDirectory('traductions/dowloadFile');
+        $validateFile=0;
 
+        if ($this->files) {
+             // Creacion de directorios
+             Storage::makeDirectory('traductions/tempFileTraslate');
+             Storage::makeDirectory('traductions/fileTraduction');
+             Storage::makeDirectory('traductions/dowloadFile');
+            // Itera cada archivo
+            foreach ($this->files as $file) {
                 // Subida de archivo al servidor
                 $fileName = $file->getClientOriginalName();
                 if(file_exists('traductions/tempFileTraslate/'.$fileName)){
-                    unlink('traductions/tempFileTraslate/'.$fileName);
+                    unlink('traductions/tempFileTraslate/'.$fileName); //si el archivo ya existe se borra
                 }
                 $fileTemp = $file->storeAs('traductions/tempFileTraslate', $fileName);
 
                 //Genera traduccion del archivo
                 $textFileTraslate = $this->traslateFile($fileTemp);
 
+                // Validacion para saber si se crea o no el zip
+                $validateFile = $textFileTraslate == null ? null : 1;
+
                 // Genera archivo traducido
                 if(file_exists('traductions/fileTraduction/'.$fileName)){
                     unlink('traductions/fileTraduction/'.$fileName);
                 }
-                Storage::put('traductions/fileTraduction/'.$fileName, $textFileTraslate);
+
+                // genera archivo en español
+                if ($textFileTraslate != null) {
+                    Storage::put('traductions/fileTraduction/'.$fileName, $textFileTraslate);
+                }
             }
             Storage::deleteDirectory('traductions/tempFileTraslate');
-            $pathFileZip = $this->dowloadFiles();
 
-            if(file_exists($pathFileZip)){
-                return response()->download($pathFileZip);
+            if ($validateFile == null && count($this->files) == 1) {
+                dd('no se genero zip');
+            }else{
+                 // Genera el archivo zip
+                 $pathFileZip = $this->dowloadFiles();
+
+                 // Descarga el archivo zip
+                 if(file_exists($pathFileZip)){
+                     return response()->download($pathFileZip);
+                 }
+
             }
         }
     }
 
+    // Realiza la traducción del archivo
     public function traslateFile($text){
         $regexComillas = '/"([^"]*)"/';
         $textFile = Storage::get($text); //texto del archivo return
         $lastArrayEnglis=[]; //Array con extraccion de texto en ingles
+        $arrayValidate=[]; //Array que contiene los textos filtrados por las validaciones
         $arrayTextSpanish=[]; //Array con extraccion de texto en español
 
-        preg_match_all($regexComillas, $textFile,$result); // se filtarn las palabras entre comillas
-        $lastArrayEnglis=$result[0]; //Se guarda el resultado del filtro
+        // se filtarn las palabras entre comillas
+        $validate = preg_match_all($regexComillas, $textFile,$result);
 
-        // dd($lastArrayEnglis);
+        if ($validate == 0) {
+            return null;
+        }
+        $lastArrayEnglis = $result[0];
 
-        $textSpanish = $this->traslateArray($lastArrayEnglis); // Se traduce las palabras y se gusrada en la variable
+        // Extrayendo datos segun validaciones
+        $arrayValidate = $this->extracMatchRegex($lastArrayEnglis);
 
-        // dd($textSpanish);
+        // Traducir lineas extraidas
+        $textSpanish = $this->traslateArray($arrayValidate); // Se traduce las palabras y se gusrada en la variable
 
+        // Llenado del array con los textox traducidos al español
         foreach ($textSpanish as $value) {
-            $validate = preg_match_all($regexComillas, $value,$r); // Se filtra de nuevo las palabras en comillas
-            if ($validate == 0) {
-                array_push($arrayTextSpanish ,'"'.$value.'"'); // el resultado se guarda en el array
-            } else {
-                array_push($arrayTextSpanish ,$r[0][0]); // el resultado se guarda en el array
+            if ($value == null) {
+                array_push($arrayTextSpanish ,null);
+            }else{
+                $text = $this->extractMatchComillas($value);
+                array_push($arrayTextSpanish ,$text);
             }
         }
 
-        // dd($arrayTextSpanish);
-
+        // Reemplaza las frases en ingles del texto original al español
         for ($i=0; $i < count($lastArrayEnglis); $i++) {
-            $textFile = str_replace($lastArrayEnglis[$i],$arrayTextSpanish[$i] , $textFile);
+            if ($arrayTextSpanish[$i] != null) {
+                $textFile = str_replace($lastArrayEnglis[$i],$arrayTextSpanish[$i] , $textFile);
+            }
         }
 
+        // Retorna texto original traducido
         return $textFile;
     }
 
-
+    // Traduccion del array
     public function traslateArray($array){
         $arrayResult =[];
         $tr = new GoogleTranslate('es');
@@ -147,7 +180,8 @@ class RenpyController extends Component
 
     public function dowloadFiles(){
         $zip = new ZipArchive; // Create ZipArchive Obj
-        $zipFileName = 'traduction_files_'.uniqid() . '_.zip'; // Zip File Name
+        // $zipFileName = 'traduction_files_'.uniqid() . '_.zip'; // Zip File Name
+        $zipFileName = $this->zipName . '.zip'; // Zip File Name
 
         if ($zip->open(public_path('storage/traductions/dowloadFile/'.$zipFileName), ZipArchive::CREATE) == TRUE) {
             // Add File in ZipArchive
@@ -175,6 +209,40 @@ class RenpyController extends Component
         return null;
 
 
+    }
+
+    // Extrae las concidencias encontradas con las validaciones regex
+    public function extracMatchRegex($array){
+        $result =[];
+
+        // Validacion de / diagonal
+        $result = $this->extractMatchDiagonal($array);
+
+
+        // Retorna el resultado
+        return $result;
+    }
+
+    // Extrae las lineas que estan entre comillas de un arcivo
+    public function extractMatchComillas($textFile){
+        $regexComillas = '/"([^"]*)"/';
+
+        // se filtarn las palabras entre comillas
+        $validate = preg_match_all($regexComillas, $textFile,$result);
+        return $validate == 0 ? '"'.$textFile.'"' : $result[0][0];
+    }
+
+    // Extrae las la linea que tiene /
+    public function extractMatchDiagonal($array){
+        $regexDiagonal = '/[\/]/';
+        $arrayResult=[];
+
+        foreach ($array as $item) {
+            $val = preg_match($regexDiagonal, $item);
+            array_push ( $arrayResult , $val == 0 ? $item : null );
+        }
+
+        return $arrayResult;
     }
 
 }

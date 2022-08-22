@@ -15,14 +15,13 @@ mix.js('resources/js/app.js', 'public/js')
     .postCss('resources/css/app.css', 'public/css', [
         require('tailwindcss'),
     ])
+    .scripts([
+        'resources/js/nav.js',
+        'resources/js/tab.js',
+    ], 'public/js/vendor.js')
     .version()
     module.exports = {
         stats: {
           children: true,
         },
     }
-
-
-    // .postCss('resources/css/app.css', 'public/css', [
-    //     //
-    // ]);

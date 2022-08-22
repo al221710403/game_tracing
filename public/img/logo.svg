@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="121.07141px" height="144px" viewBox="0 0 121.07141 144" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="21.187502" y1="87.39844" x2="175.8058" y2="-11.4765625" id="gradient_1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0" />
+      <stop offset="100%" stop-color="#9C9898" />
+    </linearGradient>
+    <filter filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB" id="filter_1">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
+      <feOffset dx="0" dy="2" />
+      <feGaussianBlur stdDeviation="2" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0.39215687 0 0 0 0 0.39215687 0 0 0 0 0.39215687 0 0 0 0.49803922 0" />
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect0_dropShadow" />
+      <feBlend mode="normal" in="SourceGraphic" in2="effect0_dropShadow" result="shape" />
+    </filter>
+    <filter filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB" id="filter_2">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
+      <feOffset dx="0" dy="2" />
+      <feGaussianBlur stdDeviation="2" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0.39215687 0 0 0 0 0.39215687 0 0 0 0 0.39215687 0 0 0 0.6392157 0" />
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect0_dropShadow" />
+      <feBlend mode="normal" in="SourceGraphic" in2="effect0_dropShadow" result="shape" />
+    </filter>
+    <filter filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB" id="filter_3">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
+      <feOffset dx="0" dy="2" />
+      <feGaussianBlur stdDeviation="2" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0.39215687 0 0 0 0 0.39215687 0 0 0 0 0.39215687 0 0 0 1 0" />
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect0_dropShadow" />
+      <feBlend mode="normal" in="SourceGraphic" in2="effect0_dropShadow" result="shape" />
+    </filter>
+  </defs>
+  <g id="Grupo">
+    <path d="M0 56.5C0 25.2959 27.1028 0 60.5357 0C93.9687 0 121.071 25.2959 121.071 56.5C121.071 87.7041 93.9687 113 60.5357 113C27.1028 113 0 87.7041 0 56.5Z" id="Ellipse" fill="url(#gradient_1)" fill-rule="evenodd" stroke="none" />
+    <path d="M60 39L68.4853 47.4853L60 55.9706L51.5147 47.4853L60 39Z" id="Rectangle-4-Copy-2" fill="#FFFDFD" fill-rule="evenodd" stroke="none" />
+    <path d="M98.1628 35.4497L80.4852 17.902L71.9999 26.3873L98.1628 52.5502L98.1628 35.4497Z" id="Rectangle-6-Copy-4" fill="#FFFFFF" fill-rule="evenodd" stroke="none" />
+    <path d="M79.5 16L40 16L49 25L54 25L60.8 18L67.5 25L71 25L79.5 16Z" id="Rectangle-6-Copy-5" fill="#FFFFFF" fill-rule="evenodd" stroke="none" filter="url(#filter_1)" />
+    <path d="M21.4852 33.799L37.7487 17.2513L46.234 25.7365L21.4853 50.4853L21.4852 33.799Z" id="Rectangle-6-Copy-6" fill="#FFFFFF" fill-rule="evenodd" stroke="none" />
+    <path d="M34.3086 59.7044L86.3533 91.8572L86.3068 103.823L34.2351 72.0982L34.3086 59.7044Z" id="Rectangle-6-Copy-7" fill="#FFFFFF" fill-rule="evenodd" stroke="none" />
+    <path d="M98 58L60.3341 20L22 58L34 58L60.2286 32L86 58L98 58Z" id="Triangle-Copy-2-Xor" fill="#FFFFFF" fill-rule="evenodd" stroke="none" filter="url(#filter_1)" />
+    <path d="M98 106L60.3341 144L22 106L34 106L60.2286 132L86 106L98 106Z" id="Triangle-Copy-2-Xor-2" fill="#FFFFFF" fill-rule="evenodd" stroke="none" />
+    <path d="M34 60L22 60L22 104L34 104L34 60ZM86 60L86 104L98 104L98 60L86 60Z" id="Rectangle-8-Copy-Xor" fill="#FFFFFF" fill-rule="evenodd" stroke="none" filter="url(#filter_2)" />
+    <g filter="url(#filter_3)">
+      <g id="Group-Copy-2" transform="translate(49 58)">
+        <path d="M5.5 3.7383L11.5 0L17.5001 3.7383L17.5001 59.8128L5.5 59.8128L5.5 3.7383Z" id="Rectangle-3" fill="#FFFFFF" fill-rule="evenodd" stroke="#FFFFFF" stroke-width="1" />
+        <path d="M11.4999 69.9991L-5.72205e-06 57.5999C-5.72205e-06 57.5999 7.57141 60.6684 14 59.8544C20.4286 59.0403 29.5 51.9639 29.5 51.9639L11.4999 69.9991Z" id="Triangle-2" fill="#FFFFFF" fill-rule="evenodd" stroke="#FFFFFF" stroke-width="1" />
+      </g>
+    </g>
+  </g>
+</svg>

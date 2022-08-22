@@ -16,9 +16,21 @@
 
         @livewireStyles
 
+
+        @stack('styles')
+
+        <style>
+            /* Google Font Link */
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+            *{
+                box-sizing: border-box;
+                font-family: "Poppins" , sans-serif;
+            }
+        </style>
+
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
-        @stack('styles')
+        <script src="{{ asset('js/vendor.js') }}" defer></script>
     </head>
     <body>
 
