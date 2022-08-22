@@ -8,7 +8,7 @@
 <!-- component -->
 <div class="flex bg-gray-100 shadow-xl">
     {{--  Spinner  --}}
-    <div wire:loading.flex class="absolute bg-black opacity-80 min-h-screen w-full text-white flex justify-center items-center">
+    <div wire:loading.flex class="absolute inset-0 z-10 bg-black opacity-80 min-h-screen w-full text-white flex justify-center items-center">
         <div class="relative bg-white opacity-100 h-1/3 w-1/3 flex flex-col justify-center items-center rounded">
             <div class="spinner">
                 <div class="dot1"></div>

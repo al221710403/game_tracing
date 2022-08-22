@@ -112,7 +112,8 @@ class RenpyController extends Component
 
                  // Descarga el archivo zip
                  if(file_exists($pathFileZip)){
-                     return response()->download($pathFileZip);
+                    $this->resetUI();
+                    return response()->download($pathFileZip);
                  }
 
             }
@@ -124,8 +125,6 @@ class RenpyController extends Component
         $regexComillas = '/"([^"]*)"/';
         $textFile = Storage::get($text); //texto del archivo return
         $lastArrayEnglis=[]; //Array con extraccion de texto en ingles
-        $arrayValidate=[]; //Array que contiene los textos filtrados por las validaciones
-        $arrayTextSpanish=[]; //Array con extraccion de texto en español
 
         // se filtarn las palabras entre comillas
         $validate = preg_match_all($regexComillas, $textFile,$result);
@@ -135,44 +134,33 @@ class RenpyController extends Component
         }
         $lastArrayEnglis = $result[0];
 
-        // Extrayendo datos segun validaciones
-        $arrayValidate = $this->extracMatchRegex($lastArrayEnglis);
-
         // Traducir lineas extraidas
-        $textSpanish = $this->traslateArray($arrayValidate); // Se traduce las palabras y se gusrada en la variable
-
-        // Llenado del array con los textox traducidos al español
-        foreach ($textSpanish as $value) {
-            if ($value == null) {
-                array_push($arrayTextSpanish ,null);
-            }else{
-                $text = $this->extractMatchComillas($value);
-                array_push($arrayTextSpanish ,$text);
-            }
-        }
+        $textSpanish = $this->traslateArray($lastArrayEnglis); // Se traduce las palabras y se gusrada en la variable
 
         // Reemplaza las frases en ingles del texto original al español
         for ($i=0; $i < count($lastArrayEnglis); $i++) {
-            if ($arrayTextSpanish[$i] != null) {
-                $textFile = str_replace($lastArrayEnglis[$i],$arrayTextSpanish[$i] , $textFile);
+            if ($textSpanish[$i] != null) {
+                $textFile = str_replace($lastArrayEnglis[$i],$textSpanish[$i] , $textFile);
             }
         }
 
-        // Retorna texto original traducido
-        return $textFile;
+        return $textFile; // Retorna texto original traducido
+
     }
 
     // Traduccion del array
     public function traslateArray($array){
+
         $arrayResult =[];
         $tr = new GoogleTranslate('es');
+
         foreach ($array as $item) {
-            if ($item == null) {
-                array_push ( $arrayResult , null );
-            }else{
-                $val = $tr->translate($item);
-                array_push ( $arrayResult , $val );
+            $resultadoValidate = $this->extracMatchRegex($item);
+            $textTraslate = $tr->translate($item);
+            if ($resultadoValidate != null) {
+                $textTraslate = $this->extractMatchComillas($textTraslate);
             }
+            array_push ( $arrayResult ,$resultadoValidate == null ? null: $textTraslate );
         }
 
         return $arrayResult;
@@ -211,13 +199,13 @@ class RenpyController extends Component
 
     }
 
+
     // Extrae las concidencias encontradas con las validaciones regex
-    public function extracMatchRegex($array){
-        $result =[];
+    public function extracMatchRegex($text){
+        $result ="";
 
         // Validacion de / diagonal
-        $result = $this->extractMatchDiagonal($array);
-
+        $result = $this->extractMatchDiagonal($text);
 
         // Retorna el resultado
         return $result;
@@ -233,16 +221,21 @@ class RenpyController extends Component
     }
 
     // Extrae las la linea que tiene /
-    public function extractMatchDiagonal($array){
+    public function extractMatchDiagonal($text){
         $regexDiagonal = '/[\/]/';
-        $arrayResult=[];
 
-        foreach ($array as $item) {
-            $val = preg_match($regexDiagonal, $item);
-            array_push ( $arrayResult , $val == 0 ? $item : null );
-        }
+        $val = preg_match($regexDiagonal, $text);
 
-        return $arrayResult;
+        return $val == 0 ? $text : null ;
+    }
+
+
+    public function resetUI(){
+        $this->zipName = Carbon::now('America/Mexico_City');
+        $this->zipName = uniqid() . '_' . $this->zipName->format('d-m-Y');
+
+        $this->files = [];
+
     }
 
 }

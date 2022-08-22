@@ -9,36 +9,39 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-        <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-
         @livewireStyles
 
-
-        @stack('styles')
-
-        <style>
-            /* Google Font Link */
-            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
-            *{
-                box-sizing: border-box;
-                font-family: "Poppins" , sans-serif;
-            }
-        </style>
-
+        <!-- Scripts -->
+        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
         <script src="{{ asset('js/vendor.js') }}" defer></script>
     </head>
-    <body>
+    <body class="font-sans antialiased">
+        <x-jet-banner />
 
-        <div class="min-h-screen">
-            @yield('content')
+        <div class="min-h-screen bg-gray-100">
+            @livewire('navigation-menu')
+
+            <!-- Page Heading -->
+            @if (isset($header))
+                <header class="bg-white shadow">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endif
+
+            <!-- Page Content -->
+            <main>
+                {{ $slot }}
+            </main>
         </div>
 
+        @stack('modals')
+
         @livewireScripts
-        @stack('scripts')
     </body>
 </html>
