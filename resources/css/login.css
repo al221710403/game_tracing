@@ -1,0 +1,12 @@
+.input_form{
+    border-radius: 0;
+    background-color: #ffffff;
+    border: none;
+    -ms-transition: all 0.2s ease-in-out 0s;
+    transition: all 0.2s ease-in-out 0s;
+    color: #3b3f5c;
+    font-weight: 700;
+    font-size: 16px;
+    border-bottom: 1px solid #e0e6ed;
+    padding: 0px 0 10px 35px;
+}

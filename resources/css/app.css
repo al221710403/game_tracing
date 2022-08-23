@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* components.css */
+@import "./nav.css";
+@import "./spinner.css";
+@import "./login.css";

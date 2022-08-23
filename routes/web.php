@@ -8,7 +8,7 @@ Route::get('renpy-traslate', RenpyController::class)->name('renpy.traslate');
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 // Route::get('/', function () {
 //     $tr = new GoogleTranslate('es');

@@ -251,3 +251,9 @@
       display: none;
     }
   }
+
+
+.required::after{
+    content: " *";
+    color: #D30038;
+}
