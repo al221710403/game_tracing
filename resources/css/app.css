@@ -1,8 +1,13 @@
+/* Font Family */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500&display=swap');
+
+/* Utilerias de tailwind */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* components.css */
+@import "./effects.css";
 @import "./nav.css";
 @import "./spinner.css";
 @import "./login.css";

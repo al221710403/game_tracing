@@ -6,42 +6,26 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('img/logo-white-background.svg')}}" />
 
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+        {{--  Styles  --}}
+        @include('layouts.theme.styles')
 
-        <!-- Styles -->
-        @livewireStyles
-
-        <!-- Scripts -->
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-        <!-- Scripts -->
-        <script src="{{ mix('js/app.js') }}" defer></script>
-        <script src="{{ asset('js/vendor.js') }}" defer></script>
     </head>
-    <body class="font-sans antialiased">
-        <x-jet-banner />
+    <body>
+        <div class="font-quick overflow-hidden	flex bg-gray-100 shadow-xl min-h-screen max-h-screen">
 
-        <div class="min-h-screen bg-gray-100">
-            @livewire('navigation-menu')
+            {{--  Menu de navegacion  --}}
+            @include('layouts.theme.nav')
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
-
-            <!-- Page Content -->
-            <main>
+            {{--  Contenido  --}}
+            <main class="overflow-y-auto py-3 pr-3 grow" style="max-height: 100vh;
+            min-height:100vh;">
                 {{ $slot }}
             </main>
         </div>
 
-        @stack('modals')
 
-        @livewireScripts
+        @include('layouts.theme.scripts')
     </body>
 </html>

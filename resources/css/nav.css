@@ -1,3 +1,7 @@
+*{
+    box-sizing: border-box;
+}
+
 .sidebar{
     display: flex;
     flex-direction: column;
@@ -16,6 +20,7 @@
 
   .sidebar.open{
     width: 250px;
+    min-width: 250px;
   }
 
   .sidebar .logo-details{
@@ -211,10 +216,9 @@
   }
 
   .sidebar .logo_name_footer{
-    max-width: 190px;
+    max-width: 135px;
     color: #fff;
     font-size: 0.8rem;
-    font-weight: 300;
     opacity: 0;
     transition: all 0.5s ease;
   }
@@ -256,4 +260,14 @@
 .required::after{
     content: " *";
     color: #D30038;
+}
+
+.active{
+    background: #FFF !important;
+    cursor: default;
+}
+
+.active > *{
+    color: #11101d !important;
+    font-weight: 700 !important;
 }

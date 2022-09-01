@@ -10,6 +10,9 @@ module.exports = {
     ],
 
     theme: {
+        fontFamily: {
+            'quick': ['Quicksand','sans-serif']
+        },
         extend: {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],

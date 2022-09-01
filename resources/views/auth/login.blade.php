@@ -5,7 +5,7 @@
             <section class="text-gray-500 w-3/5 h-full py-11 flex flex-col justify-between">
                 <main>
                     <header>
-                        <h1 class="text-gray-800 text-3xl font-semibold">Inisiar sesión en</h1>
+                        <h1 class="text-gray-800 text-3xl font-semibold">Iniciar sesión en</h1>
                         <h2 class="text-blue-700 text-4xl font-bold">Traducción renpy</h2>
                     </header>
 
